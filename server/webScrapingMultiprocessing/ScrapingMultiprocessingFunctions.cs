@@ -304,7 +304,7 @@ namespace webScrapingMultiprocessing
                 data = gamesModel
             });
             
-            //await ds.SendJsonAsync(json);
+            await ds.SendJsonAsync(json);
 
             Console.WriteLine("Datos ordenados correctamente.");
             Console.WriteLine("Tiempo Total: {0} segundos", sw.Elapsed.TotalSeconds);

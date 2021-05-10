@@ -11,12 +11,12 @@ namespace webScrapingMultiprocessing
     {
         public async Task SendJsonAsync(string json)
         {
-           /* using (var client = new HttpClient())
+            using (var client = new HttpClient())
             {
                 var response = client.PostAsync(
                     "http://localhost:5000/json",
                     new StringContent(json, Encoding.UTF8, "application/json")).Result;
-            }*/
+            }
         }
         
     }
