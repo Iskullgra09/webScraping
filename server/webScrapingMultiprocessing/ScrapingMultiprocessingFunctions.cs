@@ -271,40 +271,31 @@ namespace webScrapingMultiprocessing
             List<GamesModel> gamesModel = new List<GamesModel>();
             for (int i = 0; i < gamesList.Count; i++)
             {
-                Console.WriteLine("AAAAAAAAAAAAAA");
                 if (pricesList[i].Split(';')[1].Length > 12)
                 {
-                    Console.WriteLine("BBBBBBBBBBBBBBB");
                     offer = true;
                     price = pricesList[i].Split(';')[1].Split(':')[1];
                 }
                 else
                 {
-                    Console.WriteLine("CCCCCCCCCCCCCCCCC");
                     offer = false;
                     price = pricesList[i].Split(';')[1];
                 }
-                Console.WriteLine("DDDDDDDDDDDDDDDDDDDDDDD");
                 name = gamesList[i];
-                Console.WriteLine("EEEEEEEEEEEEEEEEEEEEEEE");
                 qualification = qualificationsList[i].Split(';')[1];
-                Console.WriteLine("FFFFFFFFFFFFFFFFFFFFFFF");
-                Console.WriteLine("F",hltbList[i]);
+                Console.WriteLine(hltbList.Count);
                 hltb = hltbList[i].Item2 + 'h';
-               //hltb = "GG";
-                Console.WriteLine("GGGGGGGGGGGGGGGGGGGGGGG");
                 imageURL = imagesList[i];
-                Console.WriteLine("HHHHHHHHHHHHHHHHHHHHHHHHHH");
                 GamesModel game = new GamesModel(imageURL,name,qualification,hltb,price,offer);
                 gamesModel.Add(game);
-                Console.WriteLine("IIIIIIIIIIIIIIIIIIIIIII");
+                // Console.WriteLine("IIIIIIIIIIIIIIIIIIIIIII");
             }
             var json = JsonConvert.SerializeObject(new
             {
                 data = gamesModel
             });
             
-            //await ds.SendJsonAsync(json);
+            await ds.SendJsonAsync(json);
 
             Console.WriteLine("Datos ordenados correctamente.");
             Console.WriteLine("Tiempo Total: {0} segundos", sw.Elapsed.TotalSeconds);

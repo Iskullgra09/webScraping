@@ -4,6 +4,7 @@ from howlongtobeatpy import HowLongToBeat
 
 # Función para escribir un archivo con los resultados obtenidos, será leído desde C#    os.getcwd() +
 def write_response(res):
+    print('hltb')
     fix_path = str(sys.argv[2])
     if os.path.isfile(fix_path):  # Si el archivo existe...
         os.remove(fix_path)       # Borra el archivo actual
