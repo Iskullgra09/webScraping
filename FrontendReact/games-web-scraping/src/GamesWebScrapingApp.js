@@ -6,35 +6,32 @@ import './styles.css'
 
 const GamesWebScrapingApp = () => {
 
-  // const [games, setGames] = useState(['1', '2', '3', '4', '5', '6', '7', '8', '9']);
 
   //Pagination
-  const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [photosPerPage] = useState(20);
+  const [dataPerPage] = useState(14);
+  const [data, setData] = useState([]);
+
 
   useEffect(() => {
-    //fetch example
-    const fetchPhotos = async () => {
-      setLoading(true);
+    const fetchData = async () => {
+      setLoading(true)
 
-      const res = await axios.get('https://jsonplaceholder.typicode.com/photos');
-      setPhotos(res.data);
+      const res = await axios.get('/getData');
 
-      setLoading(false);
+      setData(res.data.data)
 
+      setLoading(false)
     }
-
-    fetchPhotos();
-    //fetch real data
-  }, []);
+    fetchData()
+  }, [])
 
 
   //Get current photos
-  const indexOfLastPhoto = currentPage * photosPerPage;
-  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
-  const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+  const indexOfLast = currentPage * dataPerPage;
+  const indexOfFirst = indexOfLast - dataPerPage;
+  const currentData = data.slice(indexOfFirst, indexOfLast);
 
   //change paginate
   const paginate = (pageNumber) => {
@@ -42,7 +39,7 @@ const GamesWebScrapingApp = () => {
   };
 
   //Pagination npm
-  const numberOfPages = Math.ceil((photos.length) / photosPerPage);
+  const numberOfPages = Math.ceil((data.length) / dataPerPage);
 
   return (
     <>
@@ -54,8 +51,8 @@ const GamesWebScrapingApp = () => {
             nextLabel=">"
             breakClassName={'break-me'}
             pageCount={numberOfPages}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={3}
+            marginPagesDisplayed={3}
+            pageRangeDisplayed={2}
             onPageChange={paginate}
             containerClassName={'pagination'}
             activeClassName={'active'}
@@ -66,11 +63,12 @@ const GamesWebScrapingApp = () => {
       </header>
       <div className="game-container">
         {
-          currentPhotos.map((game, index) => (
+          currentData.map((game, index) => (
             <Game key={index} data={game} />
           ))
         }
       </div>
+
     </>
   )
 }
