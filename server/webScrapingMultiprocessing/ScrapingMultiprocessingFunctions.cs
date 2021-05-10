@@ -289,9 +289,9 @@ namespace webScrapingMultiprocessing
                 Console.WriteLine("EEEEEEEEEEEEEEEEEEEEEEE");
                 qualification = qualificationsList[i].Split(';')[1];
                 Console.WriteLine("FFFFFFFFFFFFFFFFFFFFFFF");
-                //Console.WriteLine("F",hltbList[i]);
-               // hltb = hltbList[i].Item2 + 'h';
-               hltb = "GG";
+                Console.WriteLine("F",hltbList[i]);
+                hltb = hltbList[i].Item2 + 'h';
+               //hltb = "GG";
                 Console.WriteLine("GGGGGGGGGGGGGGGGGGGGGGG");
                 imageURL = imagesList[i];
                 Console.WriteLine("HHHHHHHHHHHHHHHHHHHHHHHHHH");
