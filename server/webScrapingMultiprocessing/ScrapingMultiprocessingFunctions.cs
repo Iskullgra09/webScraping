@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace webScrapingMultiprocessing
 {
@@ -17,8 +18,45 @@ namespace webScrapingMultiprocessing
         DataService ds = new DataService();
         List<string> gamesList = new List<string>() { "mortal kombat x", "battlefield 4", "until dawn", "bloodborne", "heavy rain", "dying light", "dishonored 2", "just cause 4", "ufc 3", "doom", "days gone", "resident evil 5", "resident evil hd", "mad max","uncharted the nathan drake collection", "final fantasy vii remake", "sekiro shadows die twice", "devil may cry 5", "the evil within 2", "borderlands 3", "cuphead", "doom eternal", "fallout 76", "fifa 21", "payday 2 crimewave edition", "middle earth shadow of mordor", "ark survival evolved", "red dead redemption 2", "ghost of tsushima", "tomb raider definitive edition", "need for speed payback", "resident evil 0 hd", "lego marvel super heroes", "batman arkham knight", "lego marvel avengers", "lego harry potter collection", "street fighter v",  "dirt 4", "tekken 7", "lego worlds" };
         Stopwatch sw = new Stopwatch();
+        double valorDolar = 0;
+        double valorColon = 0;
         
-        
+        private double ValorARSDollar()
+        {
+            double dollar=0;
+            string tempDollar = "";
+            HtmlWeb oWeb = new HtmlWeb();
+            WebClient oClient = new WebClient();
+            HtmlDocument doc;
+            string url;
+            url = "https://es.valutafx.com/ARS-USD.htm";
+            doc = oWeb.Load(url);
+            foreach (var Nodo in doc.DocumentNode.CssSelect("div.rate-value"))
+            {
+                dollar = double.Parse(Nodo.InnerHtml);
+                dollar = dollar * 0.00001;
+            }
+
+            return dollar;
+        }
+        private double ValorDollarColon()
+        {
+            double dollar = 0;
+            HtmlWeb oWeb = new HtmlWeb();
+            WebClient oClient = new WebClient();
+            HtmlDocument doc;
+            string url;
+            url = "https://es.valutafx.com/USD-CRC.htm";
+            doc = oWeb.Load(url);
+            foreach (var Nodo in doc.DocumentNode.CssSelect("div.rate-value"))
+            {
+                dollar = double.Parse(Nodo.InnerHtml);
+                dollar = dollar * 0.01;
+            }
+
+            return dollar;
+        }
+
         public List<string> ScrapingGamesImages()
         {
             List<string> gamesImagesURLs = new List<string>();
@@ -90,8 +128,9 @@ namespace webScrapingMultiprocessing
             string URL = "http://dixgamer.com/shop/juegos/ps4/accion-ps4/" + name.Replace(" ", "-") + "/?v=1d7b33fc26ca";
             doc = htmlWeb.Load(URL);
             //Console.WriteLine(url);
-            foreach (var nodo in doc.DocumentNode.CssSelect("span.price"))
+            foreach (var nodo in doc.DocumentNode.CssSelect("p.price"))
             {
+                string x = nodo.InnerText;
                 foreach (var nodo2 in doc.DocumentNode.CssSelect("div.product-images span.onsale"))
                 {
                     offer = true;
@@ -103,7 +142,7 @@ namespace webScrapingMultiprocessing
                 priceResult = precios[0].Split('\n')[1];
                 if (priceResult.Length > 5)
                 {
-                    tempPriceResult = "" + priceResult[4] + priceResult[5] + priceResult[6] + priceResult[7];
+                    tempPriceResult = "" + priceResult[5] + priceResult[6];
                     price = float.Parse(tempPriceResult);
                 }
                 else
@@ -147,8 +186,10 @@ namespace webScrapingMultiprocessing
                 }
                 break;
             }
-            price = price / float.Parse("79,0307"); //se convierte a dolares porque viene en ARS (pesos argentinos)
+            
+            //price = price / float.Parse("79,0307"); //se convierte a dolares porque viene en ARS (pesos argentinos)
             tempPrice = price.ToString("####0.00");
+            
             return float.Parse(tempPrice);
         }
         
@@ -157,10 +198,10 @@ namespace webScrapingMultiprocessing
             string price;
             List<string> priceList = new List<string>();
 
-            List<float> tempPriceList1 = new List<float>(gamesList.Count);
+            List<double> tempPriceList1 = new List<double>(gamesList.Count);
             for (int i = 0; i < gamesList.Count; i++) tempPriceList1.Add(0);
 
-            List<float> tempPriceList2 = new List<float>(gamesList.Count);
+            List<double> tempPriceList2 = new List<double>(gamesList.Count);
             for (int i = 0; i < gamesList.Count; i++) tempPriceList2.Add(0);
 
             Parallel.Invoke(() =>
@@ -187,6 +228,7 @@ namespace webScrapingMultiprocessing
                     for (int i = 0; i < 20; i++)
                     {
                         tempPriceList2[i] = ScrapingGamesPriceTwo(gamesList[i]);
+
                     }      
                     
                 }, () =>
@@ -203,35 +245,37 @@ namespace webScrapingMultiprocessing
             {
                 if (tempPriceList1[i] < 0) //hay oferta
                 {
-                    if ((tempPriceList1[i] * -1) < tempPriceList2[i])
+                    if (((tempPriceList1[i] * -1)* valorColon) < (tempPriceList2[i]* valorDolar * valorColon))
                     {
-                        price = "oferta: $" + (tempPriceList1[i] * -1) + "-$" + tempPriceList2[i];
+                        price = "oferta: " + Math.Round(((tempPriceList1[i] * -1)* valorColon), 0) + " - " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);
+                        
                     }
-                    else if ((tempPriceList1[i] * -1) == tempPriceList2[i])
+                    else if (((tempPriceList1[i] * -1) * valorColon) == tempPriceList2[i] * valorDolar * valorColon)
                     {
-                        price = "oferta: $" + tempPriceList2[i]; //ponemos solo uno porque son iguales
+                        price = "oferta: " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0); //ponemos solo uno porque son iguales
                     }
                     else
                     {
-                        price = "oferta: $" + tempPriceList2[i] + "-$" + (tempPriceList1[i] * -1);
+                        price = "oferta: " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0) + " - " + Math.Round(((tempPriceList1[i] * -1)* valorColon), 0);
                     }
                 }
                 else //no hay oferta
                 {
-                    if (tempPriceList1[i] < tempPriceList2[i])
+                    if (((tempPriceList1[i] * -1)* valorColon) < tempPriceList2[i]* valorDolar * valorColon)
                     {
-                        price = "$" + tempPriceList1[i] + "-$" + tempPriceList2[i];
+                        price = Math.Round(((tempPriceList1[i] * -1)* valorColon), 0) + " - " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);
                     }
-                    else if (tempPriceList1[i] == tempPriceList2[i])
+                    else if (((tempPriceList1[i] * -1)* valorColon) == tempPriceList2[i]* valorDolar * valorColon)
                     {
-                        price = "$" + tempPriceList2[i];  //ponemos solo uno porque son iguales
+                        price = "" + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);  //ponemos solo uno porque son iguales
                     }
                     else
                     {
-                        price = "$" + tempPriceList2[i] + "-$" + tempPriceList1[i];
+                        price =  Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0) + " - " + Math.Round(((tempPriceList1[i] * -1)* valorColon), 0);
                     }
                 }
-                price = gamesList[i].Replace(" ", "").ToLower() + ";" + price;
+                //price = gamesList[i].Replace(" ", "").ToLower() + ";" + price;
+                Console.WriteLine("finaaaaaaaaaal "+ price);
                 priceList.Add(price);
             }
             return priceList;
@@ -243,6 +287,7 @@ namespace webScrapingMultiprocessing
             List<string> qualificationsList = null;
             List<Tuple<string, string>> hltbList = null;
             List<string> imagesList = null;
+            
 
             string price, name, qualification, hltb, imageURL;
             Boolean offer;
@@ -250,6 +295,14 @@ namespace webScrapingMultiprocessing
             sw.Start(); //proceso general o total
 
             Parallel.Invoke(() =>
+            {
+                valorDolar = ValorARSDollar();
+                Console.WriteLine("Valor del dolar scrapeado correctamente "+valorDolar);
+            }, () =>
+            {
+                valorColon = ValorDollarColon();
+                Console.WriteLine("Valor del colon scrapeado correctamente "+valorColon);
+            }, () =>
             {
                 imagesList = ScrapingGamesImages();
                 Console.WriteLine("Imagenes descargadas correctamente.");
@@ -281,14 +334,16 @@ namespace webScrapingMultiprocessing
                     offer = false;
                     price = pricesList[i].Split(';')[1];
                 }
+                Console.WriteLine("el precio es "  +  price);
                 name = gamesList[i];
                 qualification = qualificationsList[i].Split(';')[1];
                 Console.WriteLine(hltbList.Count);
                 hltb = hltbList[i].Item2 + 'h';
                 imageURL = imagesList[i];
                 GamesModel game = new GamesModel(imageURL,name,qualification,hltb,price,offer);
+                Console.WriteLine("objeto de juegos " + game);
                 gamesModel.Add(game);
-                // Console.WriteLine("IIIIIIIIIIIIIIIIIIIIIII");
+
             }
             var json = JsonConvert.SerializeObject(new
             {
