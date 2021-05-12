@@ -10,7 +10,7 @@ const GamesWebScrapingApp = () => {
   //Pagination
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage] = useState(14);
+  const [dataPerPage] = useState(7);
   const [data, setData] = useState([]);
 
 
@@ -46,7 +46,7 @@ const GamesWebScrapingApp = () => {
       <header>
         <div className="commentBox">
           <ReactPaginate
-            initialPage={1}
+            initialPage={0}
             previousLabel="<"
             nextLabel=">"
             breakClassName={'break-me'}
@@ -68,7 +68,13 @@ const GamesWebScrapingApp = () => {
           ))
         }
       </div>
-
+      <footer >
+        <div className="autores">
+            <span>Carlos Villalobos</span>
+            <span>Jason Barrantes</span>
+            <span>Isaac Granados</span>
+        </div>
+      </footer>
     </>
   )
 }

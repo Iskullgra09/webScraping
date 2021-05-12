@@ -14,11 +14,16 @@ body {
   flex-direction: column;
 }
 
+.commentBox {
+  padding: 1.5% 0;
+}
+
 .game-container {
   padding: 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
 }
 
 header {
@@ -29,17 +34,18 @@ header {
 }
 
 .pagination {
-  /* background-color: white; */
-  font-size: 20px;
+  font-size: 2rem;
   font-family: sans-serif;
-  font-weight: 600;
+  font-weight: 550;
+  /* background-color: aliceblue; */
+  border-radius: 20px;
 }
 
 .pagination li {
+  /* color: #284575; */
   color: white;
-  margin: 1px 3px;
-  padding: 4px;
-  /* border: 2px solid black; */
+  margin: 2px 5px;
+  padding: 6px;
 }
 
 .pagination-prev, .pagination-next {
@@ -61,7 +67,7 @@ header {
 .game {
   background-color: lightgray;
   border-radius: 3px;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   margin: 1rem;
   width: 200px;
@@ -86,4 +92,26 @@ header {
 .game-info span {
   font-weight: bold;
   margin: 1px 0px;
+}
+
+footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 8rem;
+  background-color: #1A3668;
+}
+
+.autores {
+  color: aliceblue;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.autores span {
+  letter-spacing: 1px;
+  margin: 0 1%;
 }
