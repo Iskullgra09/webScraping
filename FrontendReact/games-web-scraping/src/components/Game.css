@@ -1,0 +1,30 @@
+.popular-badge span {
+    background-color: #ff0000;
+    box-shadow: -1px 1px 1px 0 rgba(0, 0, 0, 0.09);
+    color: #FFFFFF;
+    font-family: arial;
+    font-size: 12px;
+    height: 30px;
+    line-height: 2.5;
+    position: absolute;
+    right: -29px;
+    text-align: center;
+    top: 10px;
+    transform: rotate(45deg);
+    width: 110px;
+}
+
+.ajuste {
+    position: relative;
+}
+
+.name{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 190px;
+    text-align: center;
+    font-size: 27px;
+    position: relative;
+    display: block;
+}
