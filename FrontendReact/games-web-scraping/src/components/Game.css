@@ -19,12 +19,13 @@
 }
 
 .name{
+    width: 100%;
+    text-align: center;
+}
+
+.name h1{
+    font-size: 26px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    width: 190px;
-    text-align: center;
-    font-size: 27px;
-    position: relative;
-    display: block;
 }

@@ -17,7 +17,7 @@ const Game = ({ data }) => {
             <img src={data.imageURL} alt="COD" />
             <div className="game-info">
                 <div className="name">
-                    <p>{data.name}</p>
+                    <h1>{data.name}</h1>
                 </div>
                 <span>{data.price}</span>
                 <span>Puntuación: {data.qualification}</span>
