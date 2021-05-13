@@ -146,7 +146,7 @@ namespace webScrapingMultiprocessing
                 //Console.WriteLine(priceResult);
                 if (priceResult.Length > 5)
                 {
-                    tempPriceResult = "" + priceResult[5] + priceResult[6] + priceResult[7] + priceResult[8];
+                    tempPriceResult = "" + priceResult[5] + priceResult[6];
                     //Console.WriteLine(tempPriceResult);
                     price = float.Parse(tempPriceResult);
                 }
@@ -249,31 +249,31 @@ namespace webScrapingMultiprocessing
                 {
                     if (((tempPriceList1[i] * -1)* valorColon) < (tempPriceList2[i]* valorDolar * valorColon))
                     {
-                        price = "oferta: " + Math.Round(((tempPriceList1[i] * -1)* valorColon), 0) + " - " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);
+                        price = "oferta: " + " "+Convert.ToChar(162)+Math.Round(((tempPriceList1[i] * -1)* valorColon), 0) + " - " + " "+Convert.ToChar(162)+Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);
                         
                     }
                     else if (((tempPriceList1[i] * -1) * valorColon) == tempPriceList2[i] * valorDolar * valorColon)
                     {
-                        price = "oferta: " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0); //ponemos solo uno porque son iguales
+                        price = "oferta: " + " "+Convert.ToChar(162)+Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0); //ponemos solo uno porque son iguales
                     }
                     else
                     {
-                        price = "oferta: " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0) + " - " + Math.Round(((tempPriceList1[i] * -1)* valorColon), 0);
+                        price = "oferta: " + " "+Convert.ToChar(162)+ Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0) + " - " + " "+Convert.ToChar(162)+Math.Round(((tempPriceList1[i] * -1)* valorColon), 0);
                     }
                 }
                 else //no hay oferta
                 {
                     if (((tempPriceList1[i] * -1)* valorColon) < tempPriceList2[i]* valorDolar * valorColon)
                     {
-                        price = Math.Round(((tempPriceList1[i] * -1)* valorColon), 0) + " - " + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);
+                        price = " "+Convert.ToChar(162)+ Math.Round(((tempPriceList1[i])* valorColon), 0) + " - " + " "+Convert.ToChar(162)+Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);
                     }
                     else if (((tempPriceList1[i] * -1)* valorColon) == tempPriceList2[i]* valorDolar * valorColon)
                     {
-                        price = "" + Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);  //ponemos solo uno porque son iguales
+                        price = " "+Convert.ToChar(162)+ Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0);  //ponemos solo uno porque son iguales
                     }
                     else
                     {
-                        price =  Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0) + " - " + Math.Round(((tempPriceList1[i] * -1)* valorColon), 0);
+                        price =  " "+Convert.ToChar(162)+Math.Round((tempPriceList2[i]* valorDolar * valorColon), 0) + " - " + " "+Convert.ToChar(162)+Math.Round(((tempPriceList1[i])* valorColon), 0);
                     }
                 }
                 price = gamesList[i].Replace(" ", "").ToLower() + ";" + price;
@@ -326,7 +326,7 @@ namespace webScrapingMultiprocessing
             List<GamesModel> gamesModel = new List<GamesModel>();
             for (int i = 0; i < gamesList.Count; i++)
             {
-                if (pricesList[i].Split(';')[1].Length > 12)
+                if (pricesList[i].Split(';')[1].Length > 18)
                 {
                     offer = true;
                     price = pricesList[i].Split(';')[1].Split(':')[1];
